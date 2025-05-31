@@ -6,7 +6,7 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-API_KEY = 'AIzaSyCZzK39MSn6eupHAUQU_GYGPg42rkQ7dio'
+API_KEY = 'API_KEY_USER'
 API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
 
 @app.route('/')
