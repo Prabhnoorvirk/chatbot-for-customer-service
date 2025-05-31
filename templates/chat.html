@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NoorBot - Custom Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f2f2f2;
+        }
+        .chat-box {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .msg {
+            margin: 10px 0;
+        }
+        .user {
+            text-align: right;
+            color: #3a7bd5;
+        }
+        .bot {
+            text-align: left;
+            color: #555;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #message-input {
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-box">
+        <h2>💬 NoorBot</h2>
+        <div id="chat-area"></div>
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            let input = document.getElementById("message-input");
+            let message = input.value.trim();
+            if (!message) return;
+
+            addMessage("You", message, "user");
+            input.value = "";
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                addMessage("NoorBot", data.reply, "bot");
+            });
+        }
+
+        function addMessage(sender, message, cls) {
+            let chat = document.getElementById("chat-area");
+            let msg = document.createElement("div");
+            msg.className = "msg " + cls;
+            msg.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            chat.appendChild(msg);
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+</body>
+</html>
